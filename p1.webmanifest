@@ -1,0 +1,19 @@
+{
+  "name": "Your little garden :3",
+  "short_name": "plawersforu",
+  "description": "hope you like it:3",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#210b18",
+  "theme_color": "#210b18",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

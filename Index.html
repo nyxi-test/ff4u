@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#210b18">
+
+<title>Your little garden :3</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #123553;
+  color: #f9e8ef;
+  font-family: "Segoe Script", "Comic Sans MS", cursive;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+#garden {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.scenery {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #12385f 0%, #1c5682 39%, #4383a2 60%, #234f4d 76%, #142e29 100%);
+}
+
+.cloud-bank {
+  position: absolute;
+  pointer-events: none;
+  filter: blur(3px);
+}
+
+.cloud-left {
+  top: -13%;
+  left: -12%;
+  width: 56%;
+  height: 66%;
+  opacity: .9;
+  background:
+    radial-gradient(ellipse 30% 23% at 16% 23%, #b9e3ed 0 58%, transparent 73%),
+    radial-gradient(ellipse 27% 24% at 42% 20%, #a9d9e8 0 59%, transparent 74%),
+    radial-gradient(ellipse 32% 26% at 67% 39%, #90cbe0 0 58%, transparent 74%),
+    radial-gradient(ellipse 29% 25% at 39% 48%, #82c1d9 0 59%, transparent 76%),
+    radial-gradient(ellipse 39% 25% at 26% 69%, #73b5d1 0 58%, transparent 75%),
+    radial-gradient(ellipse 35% 20% at 62% 70%, #70b1cf 0 58%, transparent 76%);
+}
+
+.cloud-right {
+  top: 26%;
+  right: -9%;
+  width: 43%;
+  height: 36%;
+  opacity: .72;
+  background:
+    radial-gradient(ellipse 31% 31% at 26% 63%, #679cbb 0 58%, transparent 76%),
+    radial-gradient(ellipse 29% 34% at 50% 40%, #77abc4 0 58%, transparent 76%),
+    radial-gradient(ellipse 34% 30% at 75% 58%, #6598b5 0 58%, transparent 76%),
+    radial-gradient(ellipse 45% 27% at 53% 78%, #5487a6 0 58%, transparent 77%);
+}
+
+.scenery::before,
+.scenery::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.scenery::before {
+  left: -18%;
+  bottom: -19%;
+  width: 137%;
+  height: 47%;
+  border-radius: 50% 50% 0 0 / 17% 17% 0 0;
+  transform: rotate(5deg);
+  background:
+    radial-gradient(ellipse at 22% 30%, #6f9c68a6, transparent 37%),
+    radial-gradient(ellipse at 72% 20%, #65915fa6, transparent 42%),
+    linear-gradient(180deg, #3e704e 0%, #28513d 48%, #18382e 100%);
+}
+
+.scenery::after {
+  left: -23%;
+  bottom: -27%;
+  width: 153%;
+  height: 38%;
+  border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+  transform: rotate(5deg);
+  background:
+    radial-gradient(ellipse at 35% 13%, #86a96b75, transparent 39%),
+    radial-gradient(ellipse at 82% 8%, #648d5875, transparent 43%),
+    repeating-linear-gradient(108deg, transparent 0 13px, #b2c47a12 14px, transparent 15px 25px),
+    linear-gradient(180deg, #345c3e 0%, #234832 55%, #122d25 100%);
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 72% 14%, #fff9 50%, transparent 60%),
+    radial-gradient(2px 2px at 88% 63%, #fff8 50%, transparent 60%),
+    radial-gradient(1px 1px at 32% 78%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 54% 35%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 22% 51%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 81% 30%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 63% 23%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 44% 11%, #fff9 50%, transparent 60%),
+    radial-gradient(1px 1px at 93% 22%, #fff9 50%, transparent 60%);
+}
+
+header {
+  position: absolute;
+  top: 25px;
+  width: 100%;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+h1 {
+  font-size: clamp(25px, 6vw, 36px);
+  font-weight: normal;
+  margin: 0;
+}
+
+.hint {
+  color: #d7a8b9;
+  font-size: 12px;
+  letter-spacing: 3px;
+  margin-top: 12px;
+}
+
+#flowers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.flower {
+  position: absolute;
+  width: 100px;
+  height: 190px;
+  transform: translate(-50%, 0);
+}
+
+.flower svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.stem {
+  stroke: #79b66a;
+  stroke-width: 3.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 170;
+  stroke-dashoffset: 170;
+  animation: stemGrow 1.05s ease-out forwards;
+}
+
+.leaf {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  transform: scale(0);
+  animation: leafPop .45s ease-out forwards;
+}
+
+.petal {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: petalPop .55s cubic-bezier(.18,.85,.25,1.35) forwards;
+}
+
+.center {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  animation: centerPop .35s .38s ease-out forwards;
+}
+
+.spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffe8a4;
+  box-shadow: 0 0 10px 3px #ffd9a866;
+  animation: twinkle 1.4s ease-out forwards;
+}
+
+@keyframes stemGrow {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes leafPop {
+  to { transform: scale(1); }
+}
+
+@keyframes petalPop {
+  to { transform: scale(1); }
+}
+
+@keyframes centerPop {
+  to { transform: scale(1); }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0;
+    transform: scale(.2);
+  }
+  25% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: scale(1.8) translateY(-16px);
+  }
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 6;
+}
+
+button {
+  border: 1px solid #e8bdcd55;
+  border-radius: 999px;
+  padding: 12px 20px;
+  color: #ffeaf1;
+  background: #381526dd;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+#count {
+  position: absolute;
+  right: 16px;
+  bottom: 85px;
+  color: #d7a8b9;
+  font-family: inherit;
+  font-size: 14px;
+  pointer-events: none;
+}
+</style>
+</head>
+
+<body>
+
+<main id="garden">
+
+  <div class="scenery">
+    <div class="cloud-bank cloud-left"></div>
+    <div class="cloud-bank cloud-right"></div>
+  </div>
+  <div class="stars"></div>
+
+  <header>
+    <h1>Your little garden :3</h1>
+    <p class="hint" id="hint"></p>
+  </header>
+
+  <div id="flowers"></div>
+
+  <div id="count">0 flowers planted</div>
+
+  <div class="controls">
+    <button id="undo">↶ Undo</button>
+    <button id="clear">Clear garden</button>
+  </div>
+
+</main>
+
+<script>
+
+// FLOWER COLORS: PINK AND PURPLE ONLY
+
+const palettes = [
+  {
+    petal: "#ff8fbd",
+    inner: "#ffd0e3",
+    center: "#ffe7a8"
+  },
+  {
+    petal: "#e78acb",
+    inner: "#ffc0df",
+    center: "#fff0bd"
+  },
+  {
+    petal: "#b99aff",
+    inner: "#e4d6ff",
+    center: "#ffe6b5"
+  },
+  {
+    petal: "#d58bea",
+    inner: "#f3c8ff",
+    center: "#fff0c9"
+  },
+  {
+    petal: "#ffafd0",
+    inner: "#ffe0ec",
+    center: "#f8d5ff"
+  },
+  {
+    petal: "#9877df",
+    inner: "#d8c8ff",
+    center: "#ffe7b8"
+  }
+];
+
+// DIFFERENT FLOWER SHAPES
+
+const flowerStyles = [
+  "daisy",
+  "tulip",
+  "star",
+  "layered",
+  "round",
+  "lily",
+  "ruffled",
+  "heart",
+  "bell",
+  "orchid"
+];
+
+const garden = document.getElementById("garden");
+const layer = document.getElementById("flowers");
+const count = document.getElementById("count");
+const hint = document.getElementById("hint");
+
+const flowers = [];
+const STORAGE_KEY = "little-bloom-garden-v1";
+
+
+// CREATE FLOWER
+
+function makeFlower(x, y, data, animate = true) {
+
+  const wrap = document.createElement("div");
+
+  wrap.className = "flower";
+
+  wrap.style.left = (x * 100) + "%";
+  wrap.style.top = (y * 100) + "%";
+
+  const scale = data.scale;
+
+  wrap.style.width = (100 * scale) + "px";
+  wrap.style.height = (190 * scale) + "px";
+
+  const color = palettes[data.palette];
+  const style = data.style;
+  const petals = data.petals;
+
+  let petalShapes = "";
+
+  for (let i = 0; i < petals; i++) {
+
+    const angle = (360 / petals) * i;
+
+    const delay = animate
+      ? 0.58 + i * 0.025
+      : 0;
+
+    let shape = "";
+
+    if (style === "tulip") {
+
+      shape = `
+        <path
+          d="M50 50 C50 40 39 24 50 13
+             C61 24 50 40 50 50Z"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+          stroke-width="1.1"
+        />
+      `;
+
+    } else if (style === "star") {
+
+      shape = `
+        <path
+          d="M50 50 Q44 39 50 17 Q56 39 50 50Z"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "lily") {
+
+      shape = `
+        <path
+          d="M50 50 C47 40 40 32 42 24 C43 18 47 13 50 9
+             C53 14 57 19 58 25 C60 34 53 42 50 50Z"
+          fill="${i % 2 ? color.inner : color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "ruffled") {
+
+      shape = `
+        <path
+          d="M50 50 C46 42 40 37 41 30 C42 26 45 24 46 20
+             C48 23 49 22 50 18 C52 23 54 22 55 20
+             C56 25 60 27 60 31 C61 38 54 44 50 50Z"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "heart") {
+
+      shape = `
+        <path
+          d="M50 50 C46 42 37 35 38 27 C39 19 47 18 50 25
+             C53 18 61 19 62 27 C63 35 54 42 50 50Z"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "bell") {
+
+      shape = `
+        <path
+          d="M50 50 C48 41 40 33 39 25 C37 17 42 13 50 15
+             C58 13 63 17 61 25 C60 33 52 41 50 50Z"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "orchid") {
+
+      shape = i % 2
+        ? `
+          <path
+            d="M50 50 C45 43 35 36 36 27 C38 19 46 21 50 29
+               C54 21 62 19 64 27 C65 36 55 43 50 50Z"
+            fill="${color.inner}"
+            stroke="${color.inner}"
+          />
+        `
+        : `
+          <path
+            d="M50 50 C47 40 46 25 50 12 C54 25 53 40 50 50Z"
+            fill="${color.petal}"
+            stroke="${color.inner}"
+          />
+        `;
+
+    } else if (style === "layered") {
+
+      shape = `
+        <ellipse
+          cx="50" cy="31"
+          rx="9" ry="19"
+          fill="${i % 2 ? color.inner : color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else if (style === "round") {
+
+      shape = `
+        <ellipse
+          cx="50" cy="32"
+          rx="12" ry="15"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+
+    } else {
+
+      shape = `
+        <ellipse
+          cx="50" cy="31"
+          rx="7" ry="18"
+          fill="${color.petal}"
+          stroke="${color.inner}"
+        />
+      `;
+    }
+
+    // ROTATION IS SEPARATE FROM PETAL ANIMATION
+    // This keeps petals arranged around the flower center.
+
+    petalShapes += `
+      <g transform="rotate(${angle} 50 50)">
+        <g
+          class="petal"
+          style="animation-delay:${delay}s;
+          ${animate ? "" : "transform:scale(1)"}"
+        >
+          ${shape}
+        </g>
+      </g>
+    `;
+  }
+
+  const svg = `
+
+    <svg viewBox="0 0 100 190">
+
+      <!-- STEM -->
+
+      <path
+        class="stem"
+        d="M50 48 Q47 100 50 185"
+        style="${animate ? "" : "stroke-dashoffset:0;animation:none"}"
+      />
+
+      <!-- LEAVES -->
+
+      <path
+        class="leaf"
+        d="M49 112 Q20 88 13 103 Q29 121 49 112Z"
+        fill="#79bd70"
+        stroke="#315f3c"
+        style="animation-delay:${animate ? "1s" : "0s"}"
+      />
+
+      <path
+        class="leaf"
+        d="M51 145 Q78 119 87 134 Q74 153 51 145Z"
+        fill="#8dcc76"
+        stroke="#315f3c"
+        style="animation-delay:${animate ? "1.15s" : "0s"}"
+      />
+
+      <!-- PETALS -->
+
+      ${petalShapes}
+
+      <!-- FLOWER CENTER -->
+
+      <circle
+        class="center"
+        cx="50"
+        cy="50"
+        r="${style === "tulip" ? 6 : 9}"
+        fill="${color.center}"
+        stroke="${color.inner}"
+        stroke-width="2"
+        style="${animate ? "" : "transform:scale(1);animation:none"}"
+      />
+
+    </svg>
+  `;
+
+  wrap.innerHTML = svg;
+
+  layer.appendChild(wrap);
+
+}
+
+
+// SAVE FLOWERS
+
+function saveGarden() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(flowers)
+  );
+
+}
+
+
+// UPDATE COUNTER
+
+function updateCount() {
+
+  count.textContent =
+    `${flowers.length} flowers planted`;
+
+}
+
+
+// SPARKLE EFFECT
+
+function sparkle(x, y) {
+
+  for (let i = 0; i < 5; i++) {
+
+    const s = document.createElement("i");
+
+    s.className = "spark";
+
+    s.style.left =
+      `calc(${x * 100}% + ${(Math.random() - .5) * 48}px)`;
+
+    s.style.top =
+      `calc(${y * 100}% + ${(Math.random() - .5) * 38}px)`;
+
+    layer.appendChild(s);
+
+    setTimeout(() => s.remove(), 1600);
+
+  }
+
+}
+
+
+// PLANT A FLOWER
+
+function plant(clientX, clientY) {
+
+  const rect = garden.getBoundingClientRect();
+
+  const x = Math.max(
+    .06,
+    Math.min(.94, (clientX - rect.left) / rect.width)
+  );
+
+  const y = Math.max(
+    .13,
+    Math.min(.73, (clientY - rect.top) / rect.height)
+  );
+
+  const data = {
+
+    x,
+    y,
+
+    palette: Math.floor(
+      Math.random() * palettes.length
+    ),
+
+    style: flowerStyles[
+      Math.floor(Math.random() * flowerStyles.length)
+    ],
+
+    scale: .72 + Math.random() * .48,
+
+    petals: [8, 10, 12, 14][
+      Math.floor(Math.random() * 4)
+    ]
+
+  };
+
+  flowers.push(data);
+
+  makeFlower(x, y, data, true);
+
+  sparkle(x, y);
+  hint.textContent = "flower 4 u :3";
+
+  updateCount();
+
+  saveGarden();
+
+}
+
+
+// TOUCH AND MOUSE SUPPORT
+
+garden.addEventListener("pointerdown", (e) => {
+
+  if (e.target.closest("button")) return;
+
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+
+  plant(e.clientX, e.clientY);
+
+});
+
+
+// UNDO BUTTON
+
+document.getElementById("undo")
+.addEventListener("click", () => {
+
+  if (!flowers.length) return;
+
+  flowers.pop();
+
+  layer.innerHTML = "";
+
+  flowers.forEach(f => {
+    makeFlower(f.x, f.y, f, false);
+  });
+
+  updateCount();
+
+  saveGarden();
+
+});
+
+
+// CLEAR GARDEN BUTTON
+
+document.getElementById("clear")
+.addEventListener("click", () => {
+
+  if (!flowers.length) return;
+
+  if (!confirm("Clear all flowers?")) return;
+
+  flowers.length = 0;
+
+  layer.innerHTML = "";
+
+  updateCount();
+
+  saveGarden();
+
+});
+
+
+// LOAD PREVIOUSLY SAVED FLOWERS
+
+try {
+
+  const saved = JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || "[]"
+  );
+
+  if (Array.isArray(saved)) {
+
+    saved.slice(0, 500).forEach(f => {
+
+      if (
+        Number.isFinite(f.x) &&
+        Number.isFinite(f.y) &&
+        Number.isInteger(f.palette) &&
+        palettes[f.palette] &&
+        flowerStyles.includes(f.style)
+      ) {
+
+        flowers.push(f);
+
+        makeFlower(f.x, f.y, f, false);
+
+      }
+
+    });
+
+  }
+
+} catch (e) {
+
+  console.log("Could not load saved garden.");
+
+}
+
+updateCount();
+
+</script>
+
+</body>
+</html>
